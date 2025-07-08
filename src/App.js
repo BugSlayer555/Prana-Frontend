@@ -15,6 +15,7 @@ import InventoryManagement from './pages/InventoryManagement';
 import StaffManagement from './pages/StaffManagement';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 
 // Import context providers
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -56,6 +57,7 @@ function App() {
                 </PublicRoute>
               } 
             />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
 
             {/* Protected Routes */}
             <Route 
