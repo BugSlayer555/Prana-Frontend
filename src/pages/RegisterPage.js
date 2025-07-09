@@ -32,6 +32,8 @@ const RegisterPage = () => {
         setShowVerifyMsg(true);
       } else if (result.error && result.error.toLowerCase().includes('already exists')) {
         setAlreadyExists(true);
+      } else if (result.error && result.error.toLowerCase().includes('phone number already registered')) {
+        toast.error('Phone number already registered. Please use a different phone number.');
       }
     } catch (error) {
       toast.error('Registration failed. Please try again.');
@@ -69,7 +71,7 @@ const RegisterPage = () => {
         {alreadyExists ? (
           <div className="bg-white shadow-xl rounded-lg p-8 max-w-md w-full text-center mx-auto flex flex-col items-center justify-center">
             <h2 className="text-2xl font-bold mb-4 text-red-600">Account Already Exists</h2>
-            <p className="text-gray-700 mb-4">An account with this email already exists. Please <Link to="/login" className="text-primary-600 hover:underline">log in here</Link>.</p>
+            <p className="text-gray-700 mb-4">An account with this email or phone number already exists. Please <Link to="/login" className="text-primary-600 hover:underline">log in here</Link>.</p>
           </div>
         ) : showVerifyMsg ? (
           <div className="bg-white shadow-xl rounded-lg p-8 max-w-md w-full text-center mx-auto flex flex-col items-center justify-center">

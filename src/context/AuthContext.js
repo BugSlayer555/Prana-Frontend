@@ -81,11 +81,16 @@ export const AuthProvider = ({ children }) => {
     toast.success('Logged out successfully');
   };
 
+  const setUserDirectly = (userData) => {
+    setUser(userData);
+  };
+
   const value = {
     user,
     login,
     register,
     logout,
+    setUserDirectly,
     loading,
   };
 
