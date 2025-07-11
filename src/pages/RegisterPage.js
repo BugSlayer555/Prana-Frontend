@@ -123,8 +123,11 @@ const RegisterPage = () => {
       if (result.success) {
         setShowVerifyMsg(true);
         setVerifyMsg(result.message);
-        // Do NOT log in or redirect the user here
-        if (result.emailSent) {
+        
+        // Check if user needs approval
+        if (result.needsApproval) {
+          toast.success(result.message || 'Registration successful! Please wait for admin approval.');
+        } else if (result.emailSent) {
           toast.success(result.message || 'Registration successful! Please check your email for verification.');
         } else {
           toast.success(result.message || 'Registration successful! Please contact admin for account activation.');
@@ -232,9 +235,20 @@ const RegisterPage = () => {
             </div>
             <h2 className="text-2xl font-bold mb-4 text-green-600">Registration Successful!</h2>
             <p className="text-gray-700 mb-4">{verifyMsg || 'Please check your email to verify your account.'}</p>
-            <Link to="/login" className="btn-primary w-full">
-              Go to Login
-            </Link>
+            {verifyMsg && verifyMsg.toLowerCase().includes('admin approval') ? (
+              <div className="space-y-4">
+                <p className="text-sm text-yellow-600 bg-yellow-50 p-3 rounded-lg">
+                  ⚠️ Your account is pending admin approval. You will be notified once approved.
+                </p>
+                <Link to="/waiting-approval" className="btn-primary w-full">
+                  Go to Waiting Page
+                </Link>
+              </div>
+            ) : (
+              <Link to="/login" className="btn-primary w-full">
+                Go to Login
+              </Link>
+            )}
           </div>
         ) : (
           <div className="bg-white shadow-2xl rounded-2xl p-8 border border-gray-100">

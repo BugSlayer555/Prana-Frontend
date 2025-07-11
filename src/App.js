@@ -18,6 +18,7 @@ import SettingsPage from './pages/SettingsPage';
 import EmailVerificationPage from './pages/EmailVerificationPage';
 import FamilyManagement from './pages/FamilyManagement';
 import WaitingApprovalPage from './pages/WaitingApprovalPage';
+import CreateAdminPage from './pages/CreateAdminPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ContactUsPage from './pages/ContactUsPage';
 import ServicesPage from './pages/ServicesPage';
@@ -68,6 +69,7 @@ function App() {
             />
             <Route path="/verify-email" element={<EmailVerificationPage />} />
             <Route path="/waiting-approval" element={<WaitingApprovalPage />} />
+            <Route path="/create-admin" element={<CreateAdminPage />} />
 
             {/* Dashboard - Accessible to all authenticated users */}
             <Route 

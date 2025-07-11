@@ -1,46 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Search, Edit, Trash2, Eye, Phone, Mail, Calendar } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
+import axios from 'axios';
+import API_BASE_URL from '../config/api';
+import toast from 'react-hot-toast';
 
 const PatientManagement = () => {
-  const [patients, setPatients] = useState([
-    {
-      id: 1,
-      name: 'John Doe',
-      age: 35,
-      gender: 'Male',
-      phone: '+1-555-0123',
-      email: 'john.doe@email.com',
-      address: '123 Main St, City, State',
-      bloodGroup: 'O+',
-      emergencyContact: '+1-555-0124',
-      lastVisit: '2024-01-15',
-      status: 'Active'
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      age: 28,
-      gender: 'Female',
-      phone: '+1-555-0125',
-      email: 'jane.smith@email.com',
-      address: '456 Oak Ave, City, State',
-      bloodGroup: 'A-',
-      emergencyContact: '+1-555-0126',
-      lastVisit: '2024-01-20',
-      status: 'Active'
-    },
-    // Add more sample patients as needed
-  ]);
-
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/auth/users?role=patient&approved=true`);
+        setPatients(response.data);
+      } catch (error) {
+        toast.error('Failed to load patients');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPatients();
+  }, []);
+
   const filteredPatients = patients.filter(patient =>
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    patient.phone.includes(searchTerm) ||
-    patient.email.toLowerCase().includes(searchTerm.toLowerCase())
+    (patient.name && patient.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (patient.email && patient.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (patient.uniqueId && patient.uniqueId.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -68,7 +57,7 @@ const PatientManagement = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search patients by name, phone, or email..."
+                placeholder="Search patients by name, email, or unique ID..."
                 className="input-field pl-10"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -120,64 +109,81 @@ const PatientManagement = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredPatients.map((patient) => (
-                  <tr key={patient.id} className="table-row">
-                    <td className="table-cell">
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">{patient.name}</div>
-                        <div className="text-sm text-gray-500">{patient.age} years, {patient.gender}</div>
-                      </div>
-                    </td>
-                    <td className="table-cell">
-                      <div className="flex flex-col space-y-1">
-                        <div className="flex items-center text-sm text-gray-900">
-                          <Phone className="h-4 w-4 mr-2 text-gray-400" />
-                          {patient.phone}
-                        </div>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <Mail className="h-4 w-4 mr-2 text-gray-400" />
-                          {patient.email}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="table-cell">
-                      <span className="badge badge-primary">
-                        {patient.bloodGroup}
-                      </span>
-                    </td>
-                    <td className="table-cell text-sm text-gray-900">
-                      <div className="flex items-center">
-                        <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                        {new Date(patient.lastVisit).toLocaleDateString()}
-                      </div>
-                    </td>
-                    <td className="table-cell">
-                      <span className={`badge ${
-                        patient.status === 'Active' 
-                          ? 'badge-success' 
-                          : 'badge-warning'
-                      }`}>
-                        {patient.status}
-                      </span>
-                    </td>
-                    <td className="table-cell text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => setSelectedPatient(patient)}
-                          className="text-primary-600 hover:text-primary-900 transition-colors duration-200"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button className="text-primary-600 hover:text-primary-900 transition-colors duration-200">
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button className="text-red-600 hover:text-red-900 transition-colors duration-200">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                {loading ? (
+                  <tr>
+                    <td colSpan="6" className="px-6 py-4 text-center">
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                        <span className="ml-2 text-gray-600">Loading patients...</span>
                       </div>
                     </td>
                   </tr>
-                ))}
+                ) : filteredPatients.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="px-6 py-4 text-center text-gray-500">
+                      No patients found.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredPatients.map((patient) => (
+                    <tr key={patient._id} className="table-row">
+                      <td className="table-cell">
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">{patient.name}</div>
+                          <div className="text-sm text-gray-500">{patient.age ? `${patient.age} years, ` : ''}{patient.gender}</div>
+                        </div>
+                      </td>
+                      <td className="table-cell">
+                        <div className="flex flex-col space-y-1">
+                          <div className="flex items-center text-sm text-gray-900">
+                            <Phone className="h-4 w-4 mr-2 text-gray-400" />
+                            {patient.phone}
+                          </div>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Mail className="h-4 w-4 mr-2 text-gray-400" />
+                            {patient.email}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="table-cell">
+                        <span className="badge badge-primary">
+                          {patient.bloodGroup || '-'}
+                        </span>
+                      </td>
+                      <td className="table-cell text-sm text-gray-900">
+                        <div className="flex items-center">
+                          <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                          {patient.lastVisit ? new Date(patient.lastVisit).toLocaleDateString() : '-'}
+                        </div>
+                      </td>
+                      <td className="table-cell">
+                        <span className={`badge ${
+                          patient.status === 'Active' 
+                            ? 'badge-success' 
+                            : 'badge-warning'
+                        }`}>
+                          {patient.status || 'Active'}
+                        </span>
+                      </td>
+                      <td className="table-cell text-sm font-medium">
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => setSelectedPatient(patient)}
+                            className="text-primary-600 hover:text-primary-900 transition-colors duration-200"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </button>
+                          <button className="text-primary-600 hover:text-primary-900 transition-colors duration-200">
+                            <Edit className="h-4 w-4" />
+                          </button>
+                          <button className="text-red-600 hover:text-red-900 transition-colors duration-200">
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

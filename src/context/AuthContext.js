@@ -76,9 +76,9 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userData);
-      const { message, emailSent } = response.data;
+      const { message, emailSent, needsApproval } = response.data;
       // Do NOT set user or token here!
-      return { success: true, message, emailSent };
+      return { success: true, message, emailSent, needsApproval };
     } catch (error) {
       const message = error.response?.data?.message || 'Registration failed';
       return { success: false, error: message };
@@ -88,6 +88,13 @@ export const AuthProvider = ({ children }) => {
   const verifyEmail = async (token) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/api/auth/verify-email`, { token });
+      
+      // Check if user needs admin approval
+      if (response.data.needsApproval) {
+        toast.success(response.data.message || 'Email verified successfully! Please wait for admin approval.');
+        return { success: true, message: response.data.message, needsApproval: true };
+      }
+      
       const { token: newToken, user, message } = response.data;
       
       localStorage.setItem('token', newToken);
