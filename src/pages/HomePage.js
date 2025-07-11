@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Heart, Users, Clock, Award, Phone, Mail, MapPin } from 'lucide-react';
+import { ArrowRight, Shield, Heart, Users, Clock, Award, Phone, Mail, MapPin, User, Stethoscope, Calendar, CreditCard, Package, BarChart3, AlertTriangle } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import heroImage from '../assets/img/Image1.jpg';
 import Footer from '../components/Footer';
@@ -13,12 +13,12 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="pt-20 pb-16 bg-gradient-to-br from-primary-50 to-accent-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <h1 className="text-4xl md:text-6xl font-bold font-playfair text-gray-900 leading-tight">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="space-y-6 lg:space-y-8">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-playfair text-gray-900 leading-tight">
                 Modern Healthcare Management
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
                 We are a dedicated healthcare team committed to providing exceptional patient care and 
                 innovative medical solutions. Our hospital management system streamlines operations, 
                 enhances patient experience, and improves healthcare delivery.
@@ -26,14 +26,14 @@ const HomePage = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/register"
-                  className="btn-primary inline-flex items-center justify-center gap-2 text-lg px-8 py-4 rounded-full"
+                  className="btn-primary inline-flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full"
                 >
                   Get Started
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
                 <Link
                   to="#about"
-                  className="inline-flex items-center justify-center gap-2 text-lg px-8 py-4 border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white rounded-full transition-colors duration-200"
+                  className="inline-flex items-center justify-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white rounded-full transition-colors duration-200"
                 >
                   Learn More
                 </Link>
@@ -41,14 +41,14 @@ const HomePage = () => {
             </div>
             
             <div className="flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-md">
-                <div className="bg-gradient-to-br from-primary-100 to-accent-100 rounded-2xl p-8 shadow-xl">
+              <div className="relative w-full max-w-sm sm:max-w-md">
+                <div className="bg-gradient-to-br from-primary-100 to-accent-100 rounded-2xl p-4 sm:p-8 shadow-xl">
                   <img 
                     src={heroImage} 
                     alt="Modern Healthcare Management" 
-                    className="w-full h-80 object-cover rounded-lg"
+                    className="w-full h-64 sm:h-80 object-cover rounded-lg"
                   />
-                  <div className="text-center mt-6 text-primary-700 font-medium text-lg">
+                  <div className="text-center mt-4 sm:mt-6 text-primary-700 font-medium text-base sm:text-lg">
                   
                   </div>
                 </div>
@@ -59,59 +59,59 @@ const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Why Choose Our System?
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base text-gray-600 max-w-3xl mx-auto">
               Our comprehensive hospital management system offers cutting-edge features 
               designed to enhance efficiency and improve patient care.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
-                icon: <Shield className="h-12 w-12 text-primary-500" />,
+                icon: <Shield className="h-10 w-10 sm:h-12 sm:w-12 text-primary-500" />,
                 title: "Secure & Reliable",
                 description: "Advanced security measures to protect patient data and ensure HIPAA compliance."
               },
               {
-                icon: <Heart className="h-12 w-12 text-primary-500" />,
+                icon: <Heart className="h-10 w-10 sm:h-12 sm:w-12 text-primary-500" />,
                 title: "Patient-Centered Care",
                 description: "Streamlined workflows that prioritize patient experience and satisfaction."
               },
               {
-                icon: <Users className="h-12 w-12 text-primary-500" />,
+                icon: <Users className="h-10 w-10 sm:h-12 sm:w-12 text-primary-500" />,
                 title: "Team Collaboration",
                 description: "Enhanced communication tools for seamless coordination between medical staff."
               },
               {
-                icon: <Clock className="h-12 w-12 text-primary-500" />,
+                icon: <Clock className="h-10 w-10 sm:h-12 sm:w-12 text-primary-500" />,
                 title: "Real-time Updates",
                 description: "Instant notifications and updates to keep everyone informed and coordinated."
               },
               {
-                icon: <Award className="h-12 w-12 text-primary-500" />,
+                icon: <Award className="h-10 w-10 sm:h-12 sm:w-12 text-primary-500" />,
                 title: "Quality Assurance",
                 description: "Built-in quality controls and reporting tools to maintain high standards."
               },
               {
-                icon: <Users className="h-12 w-12 text-primary-500" />,
+                icon: <Users className="h-10 w-10 sm:h-12 sm:w-12 text-primary-500" />,
                 title: "User-Friendly Interface",
                 description: "Intuitive design that requires minimal training for staff adoption."
               }
             ].map((feature, index) => (
-              <div key={index} className="text-center p-6 rounded-lg hover:shadow-lg transition-shadow duration-200">
+              <div key={index} className="text-center p-4 sm:p-6 rounded-lg hover:shadow-lg transition-shadow duration-200">
                 <div className="flex justify-center mb-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-sm sm:text-base">
                   {feature.description}
                 </p>
               </div>
@@ -121,68 +121,76 @@ const HomePage = () => {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gray-50">
+      <section id="services" className="py-16 sm:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Our Services
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base text-gray-600 max-w-3xl mx-auto">
               Comprehensive hospital management features to streamline your healthcare operations.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
               {
                 title: "Patient Management",
                 description: "Complete patient registration, medical records, and history tracking.",
+                icon: <User className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
                 color: "bg-blue-500"
               },
               {
                 title: "Doctor Management",
                 description: "Manage doctor profiles, specializations, and schedules efficiently.",
+                icon: <Stethoscope className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
                 color: "bg-green-500"
               },
               {
                 title: "Appointment Scheduling",
                 description: "Smart scheduling system with automated reminders and notifications.",
+                icon: <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
                 color: "bg-purple-500"
               },
               {
                 title: "Billing & Insurance",
                 description: "Integrated billing system with insurance claim processing.",
+                icon: <CreditCard className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
                 color: "bg-orange-500"
               },
               {
                 title: "Inventory Management",
                 description: "Track medical supplies, equipment, and pharmaceutical inventory.",
+                icon: <Package className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
                 color: "bg-red-500"
               },
               {
                 title: "Staff Management",
                 description: "Comprehensive staff scheduling and performance tracking.",
+                icon: <Users className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
                 color: "bg-indigo-500"
               },
               {
                 title: "Reports & Analytics",
                 description: "Detailed insights and reports for informed decision making.",
-                color: "bg-pink-500"
+                icon: <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
+                color: "bg-teal-500"
               },
               {
                 title: "Emergency Services",
                 description: "Quick access tools for emergency situations and protocols.",
-                color: "bg-teal-500"
+                icon: <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />,
+                color: "bg-yellow-500"
               }
             ].map((service, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
-                <div className={`w-12 h-12 ${service.color} rounded-lg mb-4 flex items-center justify-center`}>
-                  <Heart className="h-6 w-6 text-white" />
+              <div key={index} className="bg-white rounded-lg shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow duration-200">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 ${service.color} rounded-lg mb-4 flex items-center justify-center`}>
+                  {service.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-xs sm:text-sm">
                   {service.description}
                 </p>
               </div>
@@ -192,12 +200,12 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary-500">
+      <section className="py-16 sm:py-20 bg-primary-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Transform Your Healthcare Management?
           </h2>
-          <p className="text-xl text-primary-100 mb-8 max-w-3xl mx-auto">
+          <p className="text-sm sm:text-base text-primary-100 mb-8 max-w-3xl mx-auto">
             Join hundreds of healthcare providers who trust our system for their daily operations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -225,7 +233,7 @@ const HomePage = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Contact Us
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base text-gray-600 max-w-3xl mx-auto">
               Have questions? We're here to help you get started with our hospital management system.
             </p>
           </div>

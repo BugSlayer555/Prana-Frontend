@@ -16,7 +16,12 @@ import {
   Heart,
   Bell,
   Search,
-  User
+  User,
+  Pill,
+  Activity,
+  FileText,
+  Phone,
+  MessageSquare
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -32,17 +37,82 @@ const DashboardLayout = ({ children, title }) => {
     navigate('/');
   };
 
-  const menuItems = [
-    { name: 'Dashboard', icon: Home, path: '/dashboard' },
-    { name: 'Patients', icon: Users, path: '/patients' },
-    { name: 'Doctors', icon: UserCheck, path: '/doctors' },
-    { name: 'Appointments', icon: Calendar, path: '/appointments' },
-    { name: 'Billing', icon: CreditCard, path: '/billing' },
-    { name: 'Inventory', icon: Package, path: '/inventory' },
-    { name: 'Staff', icon: UserCog, path: '/staff' },
-    { name: 'Reports', icon: BarChart3, path: '/reports' },
-    { name: 'Settings', icon: Settings, path: '/settings' },
-  ];
+  // Role-based menu items
+  const getMenuItems = () => {
+    const baseItems = [
+      { name: 'Dashboard', icon: Home, path: '/dashboard' }
+    ];
+
+    switch (user?.role) {
+      case 'admin':
+        return [
+          ...baseItems,
+          { name: 'Patients', icon: Users, path: '/patients' },
+          { name: 'Doctors', icon: UserCheck, path: '/doctors' },
+          { name: 'Staff', icon: UserCog, path: '/staff' },
+          { name: 'Appointments', icon: Calendar, path: '/appointments' },
+          { name: 'Billing', icon: CreditCard, path: '/billing' },
+          { name: 'Inventory', icon: Package, path: '/inventory' },
+          { name: 'Reports', icon: BarChart3, path: '/reports' },
+          { name: 'Settings', icon: Settings, path: '/settings' }
+        ];
+      
+      case 'doctor':
+        return [
+          ...baseItems,
+          { name: 'Patients', icon: Users, path: '/patients' },
+          { name: 'Appointments', icon: Calendar, path: '/appointments' },
+          { name: 'Medical Records', icon: FileText, path: '/medical-records' },
+          { name: 'Prescriptions', icon: Pill, path: '/prescriptions' },
+          { name: 'Reports', icon: BarChart3, path: '/reports' }
+        ];
+      
+      case 'nurse':
+        return [
+          ...baseItems,
+          { name: 'Patients', icon: Users, path: '/patients' },
+          { name: 'Appointments', icon: Calendar, path: '/appointments' },
+          { name: 'Vital Signs', icon: Activity, path: '/vitals' },
+          { name: 'Patient Care', icon: Heart, path: '/patient-care' },
+          { name: 'Medication', icon: Pill, path: '/medication' }
+        ];
+      
+      case 'receptionist':
+        return [
+          ...baseItems,
+          { name: 'Patients', icon: Users, path: '/patients' },
+          { name: 'Appointments', icon: Calendar, path: '/appointments' },
+          { name: 'Billing', icon: CreditCard, path: '/billing' },
+          { name: 'Patient Registration', icon: UserCog, path: '/registration' },
+          { name: 'Communications', icon: Phone, path: '/communications' }
+        ];
+      
+      case 'pharmacy':
+        return [
+          ...baseItems,
+          { name: 'Prescriptions', icon: Pill, path: '/prescriptions' },
+          { name: 'Inventory', icon: Package, path: '/inventory' },
+          { name: 'Patient Records', icon: FileText, path: '/patient-records' },
+          { name: 'Orders', icon: Activity, path: '/orders' },
+          { name: 'Reports', icon: BarChart3, path: '/reports' }
+        ];
+      
+      case 'patient':
+        return [
+          ...baseItems,
+          { name: 'My Appointments', icon: Calendar, path: '/my-appointments' },
+          { name: 'Medical Records', icon: FileText, path: '/my-records' },
+          { name: 'Family Health', icon: Users, path: '/family-health' },
+          { name: 'Prescriptions', icon: Pill, path: '/my-prescriptions' },
+          { name: 'Messages', icon: MessageSquare, path: '/messages' }
+        ];
+      
+      default:
+        return baseItems;
+    }
+  };
+
+  const menuItems = getMenuItems();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
@@ -183,14 +253,16 @@ const DashboardLayout = ({ children, title }) => {
                       <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                       <p className="text-xs text-gray-500">{user?.email}</p>
                     </div>
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <Settings className="h-4 w-4 inline mr-2" />
-                      Settings
-                    </Link>
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/settings"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <Settings className="h-4 w-4 inline mr-2" />
+                        Settings
+                      </Link>
+                    )}
                     <button
                       onClick={handleLogout}
                       className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -206,10 +278,8 @@ const DashboardLayout = ({ children, title }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="p-6">
-            {children}
-          </div>
+        <main className="flex-1 overflow-auto p-6">
+          {children}
         </main>
       </div>
     </div>

@@ -45,12 +45,12 @@ const PatientManagement = () => {
 
   return (
     <DashboardLayout title="Patient Management">
-      <div className="space-y-6">
+      <div className="section-spacing">
         {/* Header and Search */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Patients</h2>
-            <p className="text-gray-600">Manage patient records and information</p>
+            <h2 className="heading-responsive text-gray-900">Patients</h2>
+            <p className="text-gray-600 text-responsive">Manage patient records and information</p>
           </div>
           <button
             onClick={() => setShowAddModal(true)}
@@ -97,38 +97,38 @@ const PatientManagement = () => {
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className="table-header">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Patient
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Contact
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Blood Group
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Last Visit
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredPatients.map((patient) => (
-                  <tr key={patient.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                  <tr key={patient.id} className="table-row">
+                    <td className="table-cell">
                       <div>
                         <div className="text-sm font-medium text-gray-900">{patient.name}</div>
                         <div className="text-sm text-gray-500">{patient.age} years, {patient.gender}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="table-cell">
                       <div className="flex flex-col space-y-1">
                         <div className="flex items-center text-sm text-gray-900">
                           <Phone className="h-4 w-4 mr-2 text-gray-400" />
@@ -140,38 +140,38 @@ const PatientManagement = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    <td className="table-cell">
+                      <span className="badge badge-primary">
                         {patient.bloodGroup}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="table-cell text-sm text-gray-900">
                       <div className="flex items-center">
                         <Calendar className="h-4 w-4 mr-2 text-gray-400" />
                         {new Date(patient.lastVisit).toLocaleDateString()}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    <td className="table-cell">
+                      <span className={`badge ${
                         patient.status === 'Active' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-gray-100 text-gray-800'
+                          ? 'badge-success' 
+                          : 'badge-warning'
                       }`}>
                         {patient.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td className="table-cell text-sm font-medium">
                       <div className="flex space-x-2">
                         <button
                           onClick={() => setSelectedPatient(patient)}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-primary-600 hover:text-primary-900 transition-colors duration-200"
                         >
                           <Eye className="h-4 w-4" />
                         </button>
-                        <button className="text-indigo-600 hover:text-indigo-900">
+                        <button className="text-primary-600 hover:text-primary-900 transition-colors duration-200">
                           <Edit className="h-4 w-4" />
                         </button>
-                        <button className="text-red-600 hover:text-red-900">
+                        <button className="text-red-600 hover:text-red-900 transition-colors duration-200">
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -198,32 +198,49 @@ const PatientManagement = () => {
                   </button>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Personal Information</h4>
-                    <div className="space-y-2 text-sm">
-                      <p><span className="font-medium">Name:</span> {selectedPatient.name}</p>
-                      <p><span className="font-medium">Age:</span> {selectedPatient.age} years</p>
-                      <p><span className="font-medium">Gender:</span> {selectedPatient.gender}</p>
-                      <p><span className="font-medium">Blood Group:</span> {selectedPatient.bloodGroup}</p>
-                    </div>
+                    <label className="block text-sm font-medium text-gray-700">Name</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.name}</p>
                   </div>
-                  
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Contact Information</h4>
-                    <div className="space-y-2 text-sm">
-                      <p><span className="font-medium">Phone:</span> {selectedPatient.phone}</p>
-                      <p><span className="font-medium">Email:</span> {selectedPatient.email}</p>
-                      <p><span className="font-medium">Emergency Contact:</span> {selectedPatient.emergencyContact}</p>
-                      <p><span className="font-medium">Address:</span> {selectedPatient.address}</p>
-                    </div>
+                    <label className="block text-sm font-medium text-gray-700">Age</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.age} years</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Gender</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.gender}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Blood Group</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.bloodGroup}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Phone</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.phone}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Email</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.email}</p>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700">Address</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.address}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Emergency Contact</label>
+                    <p className="mt-1 text-sm text-gray-900">{selectedPatient.emergencyContact}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Last Visit</label>
+                    <p className="mt-1 text-sm text-gray-900">{new Date(selectedPatient.lastVisit).toLocaleDateString()}</p>
                   </div>
                 </div>
                 
                 <div className="mt-6 flex justify-end space-x-3">
                   <button
                     onClick={() => setSelectedPatient(null)}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    className="btn-outline"
                   >
                     Close
                   </button>

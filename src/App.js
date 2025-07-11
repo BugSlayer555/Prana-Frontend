@@ -15,10 +15,16 @@ import InventoryManagement from './pages/InventoryManagement';
 import StaffManagement from './pages/StaffManagement';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
-import VerifyEmailPage from './pages/VerifyEmailPage';
+import EmailVerificationPage from './pages/EmailVerificationPage';
+import FamilyManagement from './pages/FamilyManagement';
+import WaitingApprovalPage from './pages/WaitingApprovalPage';
+import AboutUsPage from './pages/AboutUsPage';
+import ContactUsPage from './pages/ContactUsPage';
+import ServicesPage from './pages/ServicesPage';
 
-// Import context providers
+// Import context providers and components
 import { AuthProvider, useAuth } from './context/AuthContext';
+import RoleBasedRoute from './components/RoleBasedRoute';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -41,6 +47,9 @@ function App() {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutUsPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/contact" element={<ContactUsPage />} />
             <Route 
               path="/login" 
               element={
@@ -57,9 +66,10 @@ function App() {
                 </PublicRoute>
               } 
             />
-            <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route path="/verify-email" element={<EmailVerificationPage />} />
+            <Route path="/waiting-approval" element={<WaitingApprovalPage />} />
 
-            {/* Protected Routes */}
+            {/* Dashboard - Accessible to all authenticated users */}
             <Route 
               path="/dashboard" 
               element={
@@ -68,68 +78,86 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* Family Management - Patient only */}
+            <Route 
+              path="/family" 
+              element={
+                <RoleBasedRoute allowedRoles={['patient']}>
+                  <FamilyManagement />
+                </RoleBasedRoute>
+              }
+            />
+
+            {/* Admin Routes */}
             <Route 
               path="/patients" 
               element={
-                <ProtectedRoute>
+                <RoleBasedRoute allowedRoles={['admin', 'doctor', 'nurse', 'receptionist']}>
                   <PatientManagement />
-                </ProtectedRoute>
+                </RoleBasedRoute>
               }
             />
             <Route 
               path="/doctors" 
               element={
-                <ProtectedRoute>
+                <RoleBasedRoute allowedRoles={['admin']}>
                   <DoctorManagement />
-                </ProtectedRoute>
-              }
-            />
-            <Route 
-              path="/appointments" 
-              element={
-                <ProtectedRoute>
-                  <AppointmentManagement />
-                </ProtectedRoute>
-              }
-            />
-            <Route 
-              path="/billing" 
-              element={
-                <ProtectedRoute>
-                  <BillingManagement />
-                </ProtectedRoute>
-              }
-            />
-            <Route 
-              path="/inventory" 
-              element={
-                <ProtectedRoute>
-                  <InventoryManagement />
-                </ProtectedRoute>
+                </RoleBasedRoute>
               }
             />
             <Route 
               path="/staff" 
               element={
-                <ProtectedRoute>
+                <RoleBasedRoute allowedRoles={['admin']}>
                   <StaffManagement />
-                </ProtectedRoute>
+                </RoleBasedRoute>
               }
             />
             <Route 
               path="/reports" 
               element={
-                <ProtectedRoute>
+                <RoleBasedRoute allowedRoles={['admin', 'doctor']}>
                   <ReportsPage />
-                </ProtectedRoute>
+                </RoleBasedRoute>
               }
             />
             <Route 
               path="/settings" 
               element={
-                <ProtectedRoute>
+                <RoleBasedRoute allowedRoles={['admin']}>
                   <SettingsPage />
-                </ProtectedRoute>
+                </RoleBasedRoute>
+              }
+            />
+
+            {/* Doctor Routes */}
+            <Route 
+              path="/appointments" 
+              element={
+                <RoleBasedRoute allowedRoles={['admin', 'doctor', 'nurse', 'receptionist']}>
+                  <AppointmentManagement />
+                </RoleBasedRoute>
+              }
+            />
+
+            {/* Receptionist Routes */}
+            <Route 
+              path="/billing" 
+              element={
+                <RoleBasedRoute allowedRoles={['admin', 'receptionist']}>
+                  <BillingManagement />
+                </RoleBasedRoute>
+              }
+            />
+
+            {/* Pharmacy Routes */}
+            <Route 
+              path="/inventory" 
+              element={
+                <RoleBasedRoute allowedRoles={['admin', 'pharmacy']}>
+                  <InventoryManagement />
+                </RoleBasedRoute>
               }
             />
 
