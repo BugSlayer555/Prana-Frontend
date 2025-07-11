@@ -22,6 +22,10 @@ import CreateAdminPage from './pages/CreateAdminPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ContactUsPage from './pages/ContactUsPage';
 import ServicesPage from './pages/ServicesPage';
+import MyAppointments from './pages/MyAppointments';
+import MyRecords from './pages/MyRecords';
+import MyPrescriptions from './pages/MyPrescriptions';
+import Messages from './pages/Messages';
 
 // Import context providers and components
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -87,6 +91,40 @@ function App() {
               element={
                 <RoleBasedRoute allowedRoles={['patient']}>
                   <FamilyManagement />
+                </RoleBasedRoute>
+              }
+            />
+
+            {/* Patient Dashboard Pages */}
+            <Route 
+              path="/my-appointments" 
+              element={
+                <RoleBasedRoute allowedRoles={['patient']}>
+                  <MyAppointments />
+                </RoleBasedRoute>
+              }
+            />
+            <Route 
+              path="/my-records" 
+              element={
+                <RoleBasedRoute allowedRoles={['patient']}>
+                  <MyRecords />
+                </RoleBasedRoute>
+              }
+            />
+            <Route 
+              path="/my-prescriptions" 
+              element={
+                <RoleBasedRoute allowedRoles={['patient']}>
+                  <MyPrescriptions />
+                </RoleBasedRoute>
+              }
+            />
+            <Route 
+              path="/messages" 
+              element={
+                <RoleBasedRoute allowedRoles={['patient']}>
+                  <Messages />
                 </RoleBasedRoute>
               }
             />
