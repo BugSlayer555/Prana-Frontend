@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config/api';
 
 const VerifyEmailPage = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +18,7 @@ const VerifyEmailPage = () => {
       setMessage('Invalid or missing verification token.');
       return;
     }
-    axios.get('https://prana-backend.onrender.com/api/auth/verify-email?token=' + token)
+    axios.get(`${API_BASE_URL}/api/auth/verify-email?token=${token}`)
       .then(res => {
         setStatus('success');
         setMessage('Your email has been verified! Logging you in...');

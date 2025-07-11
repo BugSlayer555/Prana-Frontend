@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import API_BASE_URL from '../config/api';
 
 const AuthContext = createContext();
 
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/auth/user');
+      const response = await axios.get(`${API_BASE_URL}/api/auth/user`);
       setUser(response.data);
     } catch (error) {
       console.error('Failed to fetch user:', error);
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         email,
         password,
       });
@@ -74,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userData);
       const { message, emailSent } = response.data;
       // Do NOT set user or token here!
       return { success: true, message, emailSent };
@@ -86,7 +87,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyEmail = async (token) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/verify-email', { token });
+      const response = await axios.post(`${API_BASE_URL}/api/auth/verify-email`, { token });
       const { token: newToken, user, message } = response.data;
       
       localStorage.setItem('token', newToken);
@@ -116,7 +117,7 @@ export const AuthProvider = ({ children }) => {
   // Admin functions
   const getPendingApprovals = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/auth/pending-approvals');
+      const response = await axios.get(`${API_BASE_URL}/api/auth/pending-approvals`);
       return { success: true, data: response.data };
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to fetch pending approvals';
@@ -127,7 +128,7 @@ export const AuthProvider = ({ children }) => {
 
   const approveUser = async (userId, approved) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/approve-user', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/approve-user`, {
         userId,
         approved
       });
@@ -144,7 +145,7 @@ export const AuthProvider = ({ children }) => {
   // Family member functions
   const searchUsers = async (searchTerm) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/family/search', {
+      const response = await axios.post(`${API_BASE_URL}/api/family/search`, {
         searchTerm
       });
       return { success: true, data: response.data };
@@ -157,7 +158,7 @@ export const AuthProvider = ({ children }) => {
 
   const sendFamilyRequest = async (requestedId, relationship, notes) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/family/request', {
+      const response = await axios.post(`${API_BASE_URL}/api/family/request`, {
         requestedId,
         relationship,
         notes
@@ -174,7 +175,7 @@ export const AuthProvider = ({ children }) => {
 
   const getFamilyRequests = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/family/requests');
+      const response = await axios.get(`${API_BASE_URL}/api/family/requests`);
       return { success: true, data: response.data };
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to fetch family requests';
@@ -185,7 +186,7 @@ export const AuthProvider = ({ children }) => {
 
   const respondToFamilyRequest = async (requestId, status) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/family/respond', {
+      const response = await axios.post(`${API_BASE_URL}/api/family/respond`, {
         requestId,
         status
       });
@@ -201,7 +202,7 @@ export const AuthProvider = ({ children }) => {
 
   const removeFamilyMember = async (requestId) => {
     try {
-      const response = await axios.delete('http://localhost:5000/api/family/remove', {
+      const response = await axios.delete(`${API_BASE_URL}/api/family/remove`, {
         data: { requestId }
       });
       
