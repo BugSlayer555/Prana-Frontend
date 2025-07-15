@@ -32,6 +32,17 @@ const DashboardLayout = ({ children, title }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Debug: Log user, role, and menu items
+  React.useEffect(() => {
+    console.log('DashboardLayout user:', user);
+    if (user) {
+      console.log('User role:', user.role);
+    } else {
+      console.log('No user found in AuthContext');
+    }
+    console.log('Sidebar menu items:', getMenuItems());
+  }, [user]);
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -102,7 +113,7 @@ const DashboardLayout = ({ children, title }) => {
           ...baseItems,
           { name: 'My Appointments', icon: Calendar, path: '/my-appointments' },
           { name: 'Medical Records', icon: FileText, path: '/my-records' },
-          { name: 'Family Health', icon: Users, path: '/family-health' },
+          { name: 'Family Health', icon: Users, path: '/family' },
           { name: 'Prescriptions', icon: Pill, path: '/my-prescriptions' },
           { name: 'Messages', icon: MessageSquare, path: '/messages' }
         ];
@@ -167,7 +178,12 @@ const DashboardLayout = ({ children, title }) => {
                       ? 'sidebar-item active' 
                       : 'sidebar-item'
                   } mb-1`}
-                  onClick={() => setIsSidebarOpen(false)}
+                  onClick={() => {
+                    setIsSidebarOpen(false);
+                    if (item.path === '/family' || item.path === '/family-health') {
+                      console.log('Sidebar navigating to', item.path);
+                    }
+                  }}
                 >
                   <Icon className="h-5 w-5 mr-3" />
                   {item.name}

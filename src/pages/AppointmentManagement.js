@@ -151,7 +151,10 @@ const AppointmentManagement = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredAppointments.map((appointment) => (
-                  <tr key={appointment.id} className="table-row">
+                  <tr
+                    key={appointment.id}
+                    className="table-row transition-colors hover:bg-primary-50 hover:shadow-md"
+                  >
                     <td className="table-cell">
                       <div className="flex items-center">
                         <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
@@ -232,18 +235,22 @@ const AppointmentManagement = () => {
         {/* Appointment Details Modal */}
         {selectedAppointment && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+              <button
+                onClick={() => setSelectedAppointment(null)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700"
+                aria-label="Close"
+              >
+                <svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' /></svg>
+              </button>
               <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Appointment Details</h3>
-                  <button
-                    onClick={() => setSelectedAppointment(null)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    ×
-                  </button>
+                <div className="flex items-center gap-3 mb-6">
+                  <User className="h-10 w-10 text-primary-500" />
+                  <div>
+                    <div className="text-xl font-bold text-primary-700">{selectedAppointment.patientName}</div>
+                    <div className="text-sm text-primary-500">{selectedAppointment.doctorName}</div>
+                  </div>
                 </div>
-                
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Patient Name</label>
@@ -282,7 +289,6 @@ const AppointmentManagement = () => {
                     <p className="mt-1 text-sm text-gray-900">{selectedAppointment.notes}</p>
                   </div>
                 </div>
-                
                 <div className="mt-6 flex justify-end space-x-3">
                   <button
                     onClick={() => setSelectedAppointment(null)}

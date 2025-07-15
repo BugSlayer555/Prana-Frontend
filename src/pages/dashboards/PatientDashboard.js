@@ -25,9 +25,21 @@ import {
 import DashboardLayout from '../../components/DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const PatientDashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  // Debug: Log user and role
+  React.useEffect(() => {
+    console.log('PatientDashboard user:', user);
+    if (user) {
+      console.log('User role:', user.role);
+    } else {
+      console.log('No user found in AuthContext');
+    }
+  }, [user]);
+
   const [stats, setStats] = useState({
     upcomingAppointments: 2,
     completedAppointments: 15,
@@ -237,7 +249,10 @@ const PatientDashboard = () => {
               description="Register family members"
               icon={UserPlus}
               color="orange"
-              onClick={() => window.location.href = '/family'}
+              onClick={() => {
+                console.log('Navigating to /family');
+                navigate('/family');
+              }}
             />
             <QuickActionCard
               title="Download Reports"

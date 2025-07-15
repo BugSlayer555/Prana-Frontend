@@ -11,14 +11,67 @@ import {
   Phone,
   Copy,
   AlertCircle,
-  Heart
+  Heart,
+  UserCircle,
+  FileText,
+  Pill
 } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+// Remove react-loading-skeleton imports
+
+// Mock data for family member details
+const mockFamilyDetails = {
+  prescriptions: [
+    {
+      id: 1,
+      medication: 'Paracetamol 500mg',
+      dosage: '1 tablet every 6 hours',
+      doctor: 'Dr. John Smith',
+      startDate: '2024-02-01',
+      refills: 1,
+      status: 'Active',
+      instructions: 'Take after meals',
+    },
+    {
+      id: 2,
+      medication: 'Amoxicillin 250mg',
+      dosage: '1 capsule every 8 hours',
+      doctor: 'Dr. Jane Doe',
+      startDate: '2024-01-15',
+      refills: 0,
+      status: 'Expired',
+      instructions: 'Complete the full course',
+    },
+  ],
+  reports: [
+    {
+      id: 1,
+      name: 'Blood Test Report',
+      date: '2024-01-20',
+      url: '#',
+    },
+    {
+      id: 2,
+      name: 'X-Ray Chest',
+      date: '2024-01-25',
+      url: '#',
+    },
+  ],
+  info: {
+    age: 35,
+    gender: 'Male',
+    phone: '123-456-7890',
+  },
+};
 
 const FamilyManagement = () => {
   const { user, searchUsers, sendFamilyRequest, getFamilyRequests, respondToFamilyRequest, removeFamilyMember } = useAuth();
+  // Debug: Log user and familyRequests
+  useEffect(() => {
+    console.log('FamilyManagement user:', user);
+  }, [user]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -27,11 +80,37 @@ const FamilyManagement = () => {
     outgoing: [],
     accepted: []
   });
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    const loadData = async () => {
+      const start = Date.now();
+      try {
+        const result = await getFamilyRequests();
+        if (result.success && isMounted) {
+          setFamilyRequests(result.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch family requests:', error);
+      } finally {
+        const elapsed = Date.now() - start;
+        const minDelay = 600;
+        setTimeout(() => { if (isMounted) setLoading(false); }, Math.max(0, minDelay - elapsed));
+      }
+    };
+    loadData();
+    return () => { isMounted = false; };
+  }, []);
+  useEffect(() => {
+    console.log('FamilyManagement familyRequests:', familyRequests);
+  }, [familyRequests]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [relationship, setRelationship] = useState('');
   const [notes, setNotes] = useState('');
+  const [selectedFamily, setSelectedFamily] = useState(null);
+  const [showFamilyModal, setShowFamilyModal] = useState(false);
 
   const relationships = [
     { value: 'spouse', label: 'Spouse' },
@@ -42,10 +121,6 @@ const FamilyManagement = () => {
     { value: 'grandchild', label: 'Grandchild' },
     { value: 'other', label: 'Other' }
   ];
-
-  useEffect(() => {
-    fetchFamilyRequests();
-  }, []);
 
   const fetchFamilyRequests = async () => {
     try {
@@ -154,8 +229,23 @@ const FamilyManagement = () => {
   if (loading) {
     return (
       <DashboardLayout title="Family Management">
-        <div className="flex items-center justify-center min-h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="section-spacing">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {[1,2,3].map(i => (
+              <div key={i} className="rounded-xl shadow-lg border border-primary-100 overflow-hidden bg-white flex flex-col p-6 animate-pulse">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
+                  <div className="flex-1">
+                    <div className="h-4 w-24 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mb-2" />
+                    <div className="h-3 w-12 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
+                  </div>
+                </div>
+                <div className="h-3 w-32 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mb-2" />
+                <div className="h-3 w-24 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mb-2" />
+                <div className="h-8 w-24 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mt-4" />
+              </div>
+            ))}
+          </div>
         </div>
       </DashboardLayout>
     );
@@ -422,52 +512,47 @@ const FamilyManagement = () => {
               <Heart className="h-6 w-6 mr-2 text-green-500" />
               Family Members ({familyRequests.accepted.length})
             </h3>
-            <div className="space-y-4">
-              {familyRequests.accepted.map((request) => (
-                <div key={request._id} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{getFamilyMemberName(request)}</h4>
-                      <p className="text-sm text-gray-600">{getFamilyMemberEmail(request)}</p>
-                      <div className="flex items-center space-x-2 mt-1">
-                        <span className="text-sm text-gray-500">ID: {getFamilyMemberUniqueId(request)}</span>
-                        <button
-                          onClick={() => copyUniqueId(getFamilyMemberUniqueId(request))}
-                          className="text-gray-400 hover:text-gray-600 transition-colors"
-                          title="Copy Unique ID"
-                        >
-                          <Copy className="h-3 w-3" />
-                        </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {familyRequests.accepted.map((request) => {
+                const name = getFamilyMemberName(request);
+                const relation = request.relationship.charAt(0).toUpperCase() + request.relationship.slice(1);
+                return (
+                  <div key={request._id} className="rounded-xl shadow-lg border border-primary-100 overflow-hidden bg-white flex flex-col">
+                    <div className="flex items-center gap-3 bg-primary-500 px-6 py-4">
+                      <UserCircle className="h-9 w-9 text-white" />
+                      <div>
+                        <span className="text-lg font-bold text-white tracking-wide">{name}</span>
+                        <div className="text-xs text-primary-100">{relation}</div>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-sm text-gray-500">
-                        {new Date(request.respondedAt || request.requestedAt).toLocaleDateString()}
+                      <span className="ml-auto px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 flex items-center gap-1">
+                        <CheckCircle className="h-4 w-4 text-green-500" /> Connected
                       </span>
-                      <p className="text-xs text-green-600 mt-1">Connected</p>
+                    </div>
+                    <div className="flex-1 flex flex-col gap-2 p-6">
+                      <div className="flex flex-col gap-1 mb-2">
+                        <span className="text-sm text-gray-700">Email: {getFamilyMemberEmail(request)}</span>
+                        <span className="text-sm text-gray-700 flex items-center gap-1">ID: {getFamilyMemberUniqueId(request)}
+                          <button onClick={() => copyUniqueId(getFamilyMemberUniqueId(request))} className="text-gray-400 hover:text-gray-600 transition-colors" title="Copy Unique ID">
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => { setSelectedFamily(request); setShowFamilyModal(true); }}
+                        className="btn-secondary w-full mt-2"
+                      >
+                        View Details
+                      </button>
+                      <button
+                        onClick={() => handleRemoveFamilyMember(request._id)}
+                        className="w-full bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors duration-200 mt-2"
+                      >
+                        <UserX className="h-4 w-4 inline mr-1" /> Remove
+                      </button>
                     </div>
                   </div>
-                  
-                  <div className="mb-4">
-                    <p className="text-sm text-gray-700">
-                      <span className="font-medium">Relationship:</span> {request.relationship.charAt(0).toUpperCase() + request.relationship.slice(1)}
-                    </p>
-                    {request.notes && (
-                      <p className="text-sm text-gray-600 mt-1">
-                        <span className="font-medium">Notes:</span> {request.notes}
-                      </p>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => handleRemoveFamilyMember(request._id)}
-                    className="w-full bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors duration-200"
-                  >
-                    <UserX className="h-4 w-4 inline mr-1" />
-                    Remove Family Member
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -492,6 +577,71 @@ const FamilyManagement = () => {
           </div>
         )}
       </div>
+
+      {/* Family Member Modal */}
+      {showFamilyModal && selectedFamily && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl p-8 relative">
+            <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-700" onClick={() => setShowFamilyModal(false)}>
+              <XCircle className="h-6 w-6" />
+            </button>
+            {selectedFamily && selectedFamily.relationship ? (
+              <>
+                <div className="flex items-center gap-4 mb-6">
+                  <UserCircle className="h-14 w-14 text-primary-500" />
+                  <div>
+                    <div className="text-xl font-bold text-primary-700">{getFamilyMemberName(selectedFamily)}</div>
+                    <div className="text-sm text-gray-600">{selectedFamily.relationship.charAt(0).toUpperCase() + selectedFamily.relationship.slice(1)}</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Prescriptions */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2"><Pill className="h-5 w-5 text-primary-400" /><span className="font-semibold text-primary-700">Prescriptions</span></div>
+                    <div className="space-y-2">
+                      {mockFamilyDetails.prescriptions.map(p => (
+                        <div key={p.id} className="border rounded-lg p-3 flex flex-col bg-gray-50">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-bold text-gray-800">{p.medication}</span>
+                            <span className={`ml-auto px-2 py-0.5 rounded-full text-xs font-semibold ${p.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{p.status}</span>
+                          </div>
+                          <div className="text-xs text-gray-600">{p.dosage} | {p.doctor}</div>
+                          <div className="text-xs text-gray-500">Start: {p.startDate} | Refills: {p.refills}</div>
+                          <div className="text-xs text-gray-700 mt-1">{p.instructions}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Reports */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2"><FileText className="h-5 w-5 text-primary-400" /><span className="font-semibold text-primary-700">Reports</span></div>
+                    <div className="space-y-2">
+                      {mockFamilyDetails.reports.map(r => (
+                        <div key={r.id} className="border rounded-lg p-3 flex items-center bg-gray-50">
+                          <span className="font-bold text-gray-800 flex-1">{r.name}</span>
+                          <span className="text-xs text-gray-500 mr-2">{r.date}</span>
+                          <a href={r.url} className="btn-link text-xs" download>Download</a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {/* Basic Info */}
+                <div className="mt-6">
+                  <div className="font-semibold text-primary-700 mb-2">Basic Info</div>
+                  <div className="flex flex-wrap gap-4 text-sm text-gray-700">
+                    <span>Age: {mockFamilyDetails.info.age}</span>
+                    <span>Gender: {mockFamilyDetails.info.gender}</span>
+                    <span className="flex items-center gap-1"><Phone className="h-4 w-4 text-primary-400" /> {mockFamilyDetails.info.phone}</span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-red-500 font-semibold py-12">Family member data is missing or invalid.</div>
+            )}
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 };
