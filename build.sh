@@ -2,7 +2,7 @@
 set -e
 
 # Fix permissions
-chmod +x node_modules/.bin/react-scripts
+# chmod +x node_modules/.bin/react-scripts
 
 # Install dependencies if needed
 npm install
