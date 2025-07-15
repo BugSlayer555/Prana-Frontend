@@ -23,8 +23,7 @@ const Messages = () => {
   return (
     <DashboardLayout title="Messages">
       <div className="section-spacing">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="heading-responsive">Messages</h2>
+        <div className="flex justify-end items-center mb-6">
           <input
             type="text"
             className="input-field w-64"

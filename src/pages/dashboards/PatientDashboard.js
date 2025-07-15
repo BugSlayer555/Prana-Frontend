@@ -174,7 +174,7 @@ const PatientDashboard = () => {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6">
           <StatCard
             title="Upcoming Appointments"
             value={stats.upcomingAppointments}
@@ -221,8 +221,8 @@ const PatientDashboard = () => {
 
         {/* Quick Actions */}
         <div className="card">
-          <h3 className="heading-responsive text-gray-900 mb-6">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <h3 className="heading-responsive text-gray-900 mb-4 text-center sm:text-left">Quick Actions</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             <QuickActionCard
               title="Book Appointment"
               description="Schedule new appointments"
@@ -273,44 +273,41 @@ const PatientDashboard = () => {
 
         {/* Family Members Section */}
         <div className="card">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="heading-responsive text-gray-900">Family Members</h3>
-            <button className="btn-primary text-sm">
+          <div className="flex items-center justify-between mb-6 flex-col sm:flex-row gap-4 sm:gap-0">
+            <h3 className="heading-responsive text-gray-900 text-center sm:text-left">Family Members</h3>
+            <button className="btn-primary text-sm w-full sm:w-auto">
               <UserPlus className="h-4 w-4 mr-1" />
               Add Member
             </button>
           </div>
           
           {familyMembers.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {familyMembers.map((member) => (
-                <div key={member.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-3">
+                <div key={member.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col gap-2">
+                  <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between mb-3 gap-2 xs:gap-0">
+                    <div className="flex items-center space-x-3 w-full">
                       <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
                         <Users className="h-5 w-5 text-primary-600" />
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{member.name}</h4>
-                        <p className="text-sm text-gray-600">{member.relationship}</p>
+                      <div className="min-w-0">
+                        <h4 className="font-semibold text-gray-900 text-base truncate">{member.name}</h4>
+                        <p className="text-sm text-gray-600 truncate">{member.relationship}</p>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                  <div className="space-y-2 w-full">
+                    <div className="flex flex-col xs:flex-row justify-between text-sm w-full">
                       <span className="text-gray-500">Phone:</span>
-                      <span className="font-medium text-gray-900">{member.phone}</span>
+                      <span className="font-medium text-gray-900 break-all">{member.phone}</span>
                     </div>
-                    <div className="flex justify-between text-sm">
+                    <div className="flex flex-col xs:flex-row justify-between text-sm w-full">
                       <span className="text-gray-500">Blood Group:</span>
                       <span className="font-medium text-gray-900">{member.bloodGroup}</span>
                     </div>
-                    <div className="flex justify-between text-sm">
+                    <div className="flex flex-col xs:flex-row justify-between text-sm w-full">
                       <span className="text-gray-500">DOB:</span>
-                      <span className="font-medium text-gray-900">
-                        {new Date(member.dateOfBirth).toLocaleDateString()}
-                      </span>
+                      <span className="font-medium text-gray-900">{new Date(member.dateOfBirth).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
@@ -330,32 +327,32 @@ const PatientDashboard = () => {
         </div>
 
         {/* Upcoming Appointments and Recent Test Results */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
           {/* Upcoming Appointments */}
           <div className="card">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="heading-responsive text-gray-900">Upcoming Appointments</h3>
-              <button className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors duration-200">
+            <div className="flex items-center justify-between mb-6 flex-col sm:flex-row gap-4 sm:gap-0">
+              <h3 className="heading-responsive text-gray-900 text-center sm:text-left">Upcoming Appointments</h3>
+              <button className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors duration-200 w-full sm:w-auto">
                 View All
               </button>
             </div>
             <div className="space-y-4">
               {upcomingAppointments.map((appointment) => (
-                <div key={appointment.id} className="flex items-center space-x-4 p-4 rounded-lg bg-gray-50 border border-gray-100">
+                <div key={appointment.id} className="flex flex-col xs:flex-row xs:items-center xs:space-x-4 space-y-2 xs:space-y-0 p-4 rounded-lg bg-gray-50 border border-gray-100">
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
                       <Calendar className="h-5 w-5 text-primary-600" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900">{appointment.doctor}</p>
-                    <p className="text-xs text-gray-500">{appointment.specialty} • {appointment.type}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{appointment.doctor}</p>
+                    <p className="text-xs text-gray-500 truncate">{appointment.specialty} • {appointment.type}</p>
                     <p className="text-xs text-gray-500 flex items-center mt-1">
                       <Clock className="h-3 w-3 mr-1" />
                       {appointment.date} at {appointment.time}
                     </p>
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 mt-2 xs:mt-0">
                     <span className="badge badge-success">{appointment.status}</span>
                   </div>
                 </div>
@@ -365,29 +362,29 @@ const PatientDashboard = () => {
 
           {/* Recent Test Results */}
           <div className="card">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="heading-responsive text-gray-900">Recent Test Results</h3>
-              <button className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors duration-200">
+            <div className="flex items-center justify-between mb-6 flex-col sm:flex-row gap-4 sm:gap-0">
+              <h3 className="heading-responsive text-gray-900 text-center sm:text-left">Recent Test Results</h3>
+              <button className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors duration-200 w-full sm:w-auto">
                 View All
               </button>
             </div>
             <div className="space-y-4">
               {recentTestResults.map((test) => (
-                <div key={test.id} className="flex items-center space-x-4 p-4 rounded-lg bg-gray-50 border border-gray-100">
+                <div key={test.id} className="flex flex-col xs:flex-row xs:items-center xs:space-x-4 space-y-2 xs:space-y-0 p-4 rounded-lg bg-gray-50 border border-gray-100">
                   <div className="flex-shrink-0">
                     <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                       <FileText className="h-5 w-5 text-green-600" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900">{test.test}</p>
-                    <p className="text-xs text-gray-500">{test.result}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{test.test}</p>
+                    <p className="text-xs text-gray-500 truncate">{test.result}</p>
                     <p className="text-xs text-gray-500 flex items-center mt-1">
                       <Calendar className="h-3 w-3 mr-1" />
                       {test.date} • {test.doctor}
                     </p>
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 mt-2 xs:mt-0">
                     <span className="badge badge-success">{test.status}</span>
                   </div>
                 </div>
@@ -398,40 +395,37 @@ const PatientDashboard = () => {
 
         {/* Active Prescriptions */}
         <div className="card">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="heading-responsive text-gray-900">Active Prescriptions</h3>
-            <button className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors duration-200">
+          <div className="flex items-center justify-between mb-6 flex-col sm:flex-row gap-4 sm:gap-0">
+            <h3 className="heading-responsive text-gray-900 text-center sm:text-left">Active Prescriptions</h3>
+            <button className="text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors duration-200 w-full sm:w-auto">
               View All
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {activePrescriptions.map((prescription) => (
-              <div key={prescription.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-3">
+              <div key={prescription.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col gap-2">
+                <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between mb-3 gap-2 xs:gap-0">
+                  <div className="flex items-center space-x-3 w-full">
                     <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
                       <Pill className="h-5 w-5 text-purple-600" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{prescription.medication}</h4>
-                      <p className="text-sm text-gray-600">{prescription.doctor}</p>
+                    <div className="min-w-0">
+                      <h4 className="font-semibold text-gray-900 text-base truncate">{prescription.medication}</h4>
+                      <p className="text-sm text-gray-600 truncate">{prescription.doctor}</p>
                     </div>
                   </div>
-                  <span className="badge badge-success">{prescription.status}</span>
+                  <span className="badge badge-success mt-2 xs:mt-0">{prescription.status}</span>
                 </div>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
+                <div className="space-y-2 w-full">
+                  <div className="flex flex-col xs:flex-row justify-between text-sm w-full">
                     <span className="text-gray-500">Dosage:</span>
-                    <span className="font-medium text-gray-900">{prescription.dosage}</span>
+                    <span className="font-medium text-gray-900 break-all">{prescription.dosage}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex flex-col xs:flex-row justify-between text-sm w-full">
                     <span className="text-gray-500">Start Date:</span>
-                    <span className="font-medium text-gray-900">
-                      {new Date(prescription.startDate).toLocaleDateString()}
-                    </span>
+                    <span className="font-medium text-gray-900">{new Date(prescription.startDate).toLocaleDateString()}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex flex-col xs:flex-row justify-between text-sm w-full">
                     <span className="text-gray-500">Refills:</span>
                     <span className="font-medium text-gray-900">{prescription.refills} remaining</span>
                   </div>
