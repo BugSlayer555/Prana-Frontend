@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Users, 
   Calendar, 
   Phone, 
   Clock,
-  AlertCircle,
   CheckCircle,
   UserPlus,
   FileText,
   CreditCard,
-  Mail,
-  MapPin,
   TrendingUp,
   TrendingDown,
-  Building,
-  PhoneCall,
-  MessageSquare
+  PhoneCall
 } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { useAuth } from '../../context/AuthContext';

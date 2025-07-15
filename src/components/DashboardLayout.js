@@ -32,22 +32,6 @@ const DashboardLayout = ({ children, title }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Debug: Log user, role, and menu items
-  React.useEffect(() => {
-    console.log('DashboardLayout user:', user);
-    if (user) {
-      console.log('User role:', user.role);
-    } else {
-      console.log('No user found in AuthContext');
-    }
-    console.log('Sidebar menu items:', getMenuItems());
-  }, [user]);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
   // Role-based menu items
   const getMenuItems = () => {
     const baseItems = [
@@ -121,6 +105,22 @@ const DashboardLayout = ({ children, title }) => {
       default:
         return baseItems;
     }
+  };
+
+  // Debug: Log user, role, and menu items
+  React.useEffect(() => {
+    console.log('DashboardLayout user:', user);
+    if (user) {
+      console.log('User role:', user.role);
+    } else {
+      console.log('No user found in AuthContext');
+    }
+    console.log('Sidebar menu items:', getMenuItems());
+  }, [user, getMenuItems]);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   const menuItems = getMenuItems();

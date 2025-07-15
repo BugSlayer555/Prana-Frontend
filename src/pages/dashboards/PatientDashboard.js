@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Calendar, 
   FileText, 
@@ -9,18 +9,11 @@ import {
   TrendingDown,
   Users,
   Activity,
-  Phone,
-  Mail,
-  MapPin,
-  CreditCard,
   Download,
-  Eye,
   MessageSquare,
-  Bell,
   CheckCircle,
   UserPlus,
-  Copy,
-  QrCode
+  Copy
 } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { useAuth } from '../../context/AuthContext';

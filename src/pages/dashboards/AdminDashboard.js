@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Users, 
   UserCheck, 
   Calendar, 
-  CreditCard, 
   TrendingUp, 
   TrendingDown,
   Activity,
-  Clock,
   AlertCircle,
   CheckCircle,
   Settings,
   Shield,
   BarChart3,
-  Building,
   DollarSign,
   FileText,
   UserPlus,
@@ -57,9 +54,9 @@ const AdminDashboard = () => {
   ]);
 
   // Fetch pending approvals on component mount
-  useEffect(() => {
-    fetchPendingApprovals();
-  }, []);
+  // useEffect(() => {
+  //   fetchPendingApprovals();
+  // }, []);
 
   const fetchPendingApprovals = async () => {
     setLoadingApprovals(true);

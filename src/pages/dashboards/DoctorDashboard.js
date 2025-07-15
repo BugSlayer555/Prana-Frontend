@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Users, 
   Calendar, 
   FileText, 
-  Stethoscope, 
   Clock,
   AlertCircle,
   CheckCircle,
-  UserCheck,
   Activity,
   TrendingUp,
   Phone,
   Mail,
-  MapPin,
   Heart,
   Pill
 } from 'lucide-react';

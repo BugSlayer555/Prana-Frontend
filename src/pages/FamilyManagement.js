@@ -229,23 +229,9 @@ const FamilyManagement = () => {
   if (loading) {
     return (
       <DashboardLayout title="Family Management">
-        <div className="section-spacing">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {[1,2,3].map(i => (
-              <div key={i} className="rounded-xl shadow-lg border border-primary-100 overflow-hidden bg-white flex flex-col p-6 animate-pulse">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
-                  <div className="flex-1">
-                    <div className="h-4 w-24 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mb-2" />
-                    <div className="h-3 w-12 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200" />
-                  </div>
-                </div>
-                <div className="h-3 w-32 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mb-2" />
-                <div className="h-3 w-24 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mb-2" />
-                <div className="h-8 w-24 rounded bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 mt-4" />
-              </div>
-            ))}
-          </div>
+        <div className="section-spacing flex items-center justify-center min-h-[200px]">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-500"></div>
+          <span className="ml-2 text-gray-600">Loading family members...</span>
         </div>
       </DashboardLayout>
     );

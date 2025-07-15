@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Users, 
   Calendar, 
@@ -9,13 +9,10 @@ import {
   Heart,
   Pill,
   Thermometer,
-  Syringe,
   Bed,
   Phone,
-  Mail,
   TrendingUp,
   TrendingDown,
-  UserCheck
 } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
