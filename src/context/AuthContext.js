@@ -17,17 +17,12 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Configure axios defaults
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      // Validate token by fetching user data
-      fetchUser();
-    } else {
-      setLoading(false);
-    }
-  }, [fetchUser]);
+  const logout = () => {
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
+    setUser(null);
+    toast.success('Logged out successfully');
+  };
 
   const fetchUser = async () => {
     try {
@@ -44,6 +39,18 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  // Configure axios defaults
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // Validate token by fetching user data
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const login = async (email, password) => {
     try {
@@ -108,13 +115,6 @@ export const AuthProvider = ({ children }) => {
       toast.error(message);
       return { success: false, error: message };
     }
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
-    setUser(null);
-    toast.success('Logged out successfully');
   };
 
   const setUserDirectly = (userData) => {
